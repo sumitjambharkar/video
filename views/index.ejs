@@ -1,0 +1,32 @@
+<!-- index.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Video Chat</title>
+</head>
+<body>
+  <button id="create-room-btn">Create Room</button>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    document.getElementById("create-room-btn").addEventListener("click", () => {
+      const button = document.getElementById("create-room-btn");
+      button.textContent = "Waiting...";
+      button.disabled = true;
+
+      fetch('/create-room', {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then(data => {
+        button.textContent = "Accepted";
+        window.location.href = `/${data.roomId}`;
+      })
+      .catch(error => {
+        console.error("Error creating room:", error);
+        button.textContent = "Create Room";
+        button.disabled = false;
+      });
+    });
+  </script>
+</body>
+</html>
